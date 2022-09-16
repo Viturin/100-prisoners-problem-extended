@@ -1,3 +1,4 @@
+import json
 import unittest
 from Room import Room
 
@@ -19,10 +20,28 @@ def find_all_numbers_in_room(room, offset=0):
         (res, msg) = find_helper(room, i, offset)
         if not res:
             return False, "ERROR " + str(i) + " was not found"
-    return True, "all numbers found!"
+    return True, f'all numbers found! for offset: {offset}'
 
 
-class MyTestCase(unittest.TestCase):
+def find_all_numbers_in_room_with_all_offsets(room):
+    for i in range(-room.number_of_boxes, room.number_of_boxes):
+        (res, msg) = find_all_numbers_in_room(room, i)
+        if not res:
+            return False, "ERROR " + str(i) + " was not found"
+    return True, "all numbers for all offsets found"
+
+
+def test_room_from_json(filename):
+    with open(f'testData/{filename}.json') as f:
+        data = json.load(f)
+    room_size = data['room']['size']
+    room_seed = data['room']['seed']
+    room = Room(room_size, room_seed)
+    room.travel()
+    return str(room), data['result']
+
+
+class RoomTest(unittest.TestCase):
     def test_is_number_5_reachable_in_a_10_room(self):
         (result, msg) = find_helper(Room(10), 5)
         self.assertEqual(True, result, msg)
@@ -74,6 +93,14 @@ class MyTestCase(unittest.TestCase):
     def test_all_numbers_of_a_room_with_size_1000_and_offset_4(self):
         (result, msg) = find_all_numbers_in_room(Room(1000), 4)
         self.assertEqual(True, result, msg)
+
+    def test_room_print_of_a_room_with_size_10_and_seed_1(self):
+        (result, truth) = test_room_from_json("roomPrintSize10Seed1")
+        self.assertEqual(result, truth, "room size 10 seed 1 print test")
+
+    def test_room_print_of_a_room_with_size_20_and_seed_2(self):
+        (result, truth) = test_room_from_json("roomPrintSize20Seed2")
+        self.assertEqual(result, truth, "room size 20 seed 2 print test")
 
 
 if __name__ == '__main__':
