@@ -31,7 +31,7 @@ def find_all_numbers_in_room_with_all_offsets(room):
     return True, "all numbers for all offsets found"
 
 
-def test_room_from_json(filename):
+def room_from_json(filename):
     with open(f'testData/{filename}.json') as f:
         data = json.load(f)
     room_size = data['room']['size']
@@ -103,11 +103,11 @@ class AllBoxWithOffsetReachableTests(unittest.TestCase):
 
 class RoomPrintTests(unittest.TestCase):
     def test_room_print_of_a_room_with_size_10_and_seed_1(self):
-        (result, truth) = test_room_from_json("roomPrintSize10Seed1")
+        (result, truth) = room_from_json("roomPrintSize10Seed1")
         self.assertEqual(result, truth, "room size 10 seed 1 print test")
 
     def test_room_print_of_a_room_with_size_20_and_seed_2(self):
-        (result, truth) = test_room_from_json("roomPrintSize20Seed2")
+        (result, truth) = room_from_json("roomPrintSize20Seed2")
         self.assertEqual(result, truth, "room size 20 seed 2 print test")
 
 
